@@ -1,9 +1,6 @@
-import java.util.*;
-
 public class SJF {
     public void SJF(int n, int[] k, Memory memory) {
-        Scanner in = new Scanner(System.in);
-        int start=0;
+        int start = 0;
         int total = 0;
         while (true) {
             int min = 99, c = n;
@@ -40,8 +37,7 @@ public class SJF {
             avgta += memory.processes.get(i).getTurnaroundTime();
         }
 
-        System.out.print("process Number \t Arrival Time \t Burst Time \t CompleteTime \tTurnAround Tim \tWaiting Time " + "\n");
-
+        System.out.print("process Number \t Arrival Time \t Burst Time \t CompleteTime \tTurnAround Time \tWaiting Time " + "\n");
 
         for (int i = 0; i < n; i++) {
 
@@ -50,9 +46,9 @@ public class SJF {
                     + " \t  \t  \t  " + memory.processes.get(i).getTurnaroundTime()
                     + " \t  \t  \t " + memory.processes.get(i).getWaitingTime() + "\n");
         }
+
         System.out.println("\nAverage Turn Around Time is " + (avgta / n));
         System.out.println("Average Waiting Time is " + (avgwt / n));
 
     }
-
 }

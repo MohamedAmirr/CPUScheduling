@@ -1,18 +1,10 @@
 public class PreemptivePriorityScheduling {
     private final int numOfProcesses;
-    //    private final String [] process;
-//    private final int [] arrivalTime;
-//    private final int [] burstTime;
-    private int[] mainBurstTime;
-    //    private final int [] executionTime;
-//    private final int [] priority;
-    private int[] mainPriority;
-    //    private final int [] turnAroundTime;
-//    private final int [] waitingTime;
-//    private final int [] flag;
+    private final int[] mainBurstTime;
+    private final int[] mainPriority;
     private int totalExecutionTime = 0;
     private float averageWaiting = 0, averageTAT = 0, totalWaitingTime = 0, totalTurnaroundTime = 0;
-    private Memory memory;
+    private final Memory memory;
 
     PreemptivePriorityScheduling(Memory memory, int numOfProcesses) {
         this.memory = memory;
@@ -38,7 +30,8 @@ public class PreemptivePriorityScheduling {
                 break;
 
             for (int i = 0; i < numOfProcesses; ++i) {
-                if (memory.processes.get(i).getArrivalTime() <= cnt && !memory.processes.get(i).finished && memory.processes.get(i).getPriority() <= min) {
+                if (memory.processes.get(i).getArrivalTime() <= cnt &&
+                        !memory.processes.get(i).finished && memory.processes.get(i).getPriority() <= min) {
                     min = memory.processes.get(i).getPriority();
                     idx = i;
                 }
@@ -87,16 +80,24 @@ public class PreemptivePriorityScheduling {
 
         for (int i = 0; i < numOfProcesses; ++i) {
             for (int j = i + 1; j < numOfProcesses; ++j) {
+                if(memory.processes.get(j).getArrivalTime() < memory.processes.get(i).getArrivalTime())
+                {
+                    temp = memory.processes.get(i).getArrivalTime();
+                    memory.processes.get(i).setArrivalTime(memory.processes.get(j).getArrivalTime());
+                    memory.processes.get(j).setArrivalTime(temp);
+                }
+            }
+        }
+
+        System.out.print("\n" + memory.processes.get(0).getArrivalTime());
+
+        for (int i = 0; i < numOfProcesses; ++i) {
+            for (int j = i + 1; j < numOfProcesses; ++j) {
                 if (memory.processes.get(j).getCompleteTime() < memory.processes.get(i).getCompleteTime()) {
 
                     temp = memory.processes.get(i).getCompleteTime();
                     memory.processes.get(i).setCompleteTime(memory.processes.get(j).getCompleteTime());
                     memory.processes.get(j).setCompleteTime(temp);
-
-                    temp = memory.processes.get(i).getArrivalTime();
-                    memory.processes.get(i).setArrivalTime(memory.processes.get(j).getArrivalTime());
-                    memory.processes.get(j).setArrivalTime(temp);
-
 
                     tmp = memory.processes.get(i).getProcessName();
                     memory.processes.get(i).setProcessName(memory.processes.get(j).getProcessName());
@@ -106,9 +107,11 @@ public class PreemptivePriorityScheduling {
         }
 
         for (int i = 0; i < numOfProcesses; ++i)
-            System.out.print("\n" + memory.processes.get(i).getArrivalTime() + " (" + memory.processes.get(i).getProcessName() + ") " +
-                    memory.processes.get(i).getCompleteTime());
+            System.out.print(" (" + memory.processes.get(i).getProcessName() + ") " +
+                                    memory.processes.get(i).getCompleteTime());
 
-        System.out.println("\n\nAverage Waiting Time = " + (averageWaiting) + "\nAverage Turnaround Time = " + (averageTAT) + "\nExecution Time = " + totalExecutionTime);
+        System.out.println("\n\nAverage Waiting Time = " + (averageWaiting) +
+                            "\nAverage Turnaround Time = " + (averageTAT) +
+                            "\nExecution Time = " + totalExecutionTime);
     }
 }
