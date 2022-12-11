@@ -91,7 +91,7 @@ public class agScheduling {
     }
 
     void calcTurnaroundTime(Process process) {
-        process.setTurnaroundTime(memory.time + process.getWaitingTime());
+        process.setTurnaroundTime(memory.time - process.getArrivalTime());
     }
 
     void calcWaitingTime(Process process) {
@@ -185,7 +185,6 @@ public class agScheduling {
                     continue;
                 }
                 if (memory.Exec.size() > 0 && memory.Exec.peek().getRemainingBurstTime() < curr.getRemainingBurstTime()) {
-//                    changingHistory();
                     thirdScenario();// second scenario
                     changingHistory();
                     changeCurr(2);

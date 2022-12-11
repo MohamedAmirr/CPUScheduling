@@ -13,10 +13,13 @@ public class Main {
         while (choice != 5) {
             choice = in.nextInt();
             if (choice == 1) {
-                System.out.print("Enter Process Name: ");
+                System.out.print("Enter Number of Processes: ");
                 int n = in.nextInt();
                 int[] k = new int[n];
                 Memory memory = new Memory();
+                System.out.println("Enter Context Switching: ");
+                int contextSwitching = in.nextInt();
+                memory.context=contextSwitching;
                 for (int i = 0; i < n; i++) {
                     System.out.print("Enter Process Name: ");
                     String name = in.next();
@@ -159,7 +162,7 @@ public class Main {
                 agScheduling ag = new agScheduling(memory);
                 ag.print();
                 ag.go();
-                for(var i:memory.order){
+                for (var i : memory.order) {
                     System.out.println(i);
                 }
                 Formatter fmt = new Formatter();
@@ -175,10 +178,13 @@ public class Main {
                     sumTurnAroundTime += processes.get(i).getTurnaroundTime();
                     System.out.print("\n");
                 }
-                System.out.println("Avg Waiting Time: " + (double)sumWaitingTime / (double)n);
-                System.out.println("Avg Turnaround Time: " + (double)sumTurnAroundTime / (double)n);
+                System.out.println("Avg Waiting Time: " + (double) sumWaitingTime / (double) n);
+                System.out.println("Avg Turnaround Time: " + (double) sumTurnAroundTime / (double) n);
                 System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number: ");
             }
         }
     }
 }
+
+//6 4 7
+//0 1 2

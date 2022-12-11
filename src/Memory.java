@@ -6,9 +6,11 @@ public class Memory {
     public PriorityQueue<Process> Exec;
     public int time = 0;
     public Vector<Process> processes = new Vector<>();
-    public Map<String,Integer>history = new HashMap<>() ;
-    Map.Entry<String ,Integer>lastEntry=null;
-    Vector<String>order=new Vector<>();
+    public Map<String, Integer> history = new HashMap<>();
+    Map.Entry<String, Integer> lastEntry = null;
+    Vector<String> order = new Vector<>();
+    public int currContext = 0;
+    public int context;
 
     Memory() {
         Priority = new PriorityQueue<>(new PriorityBased());
