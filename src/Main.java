@@ -1,14 +1,13 @@
 import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        System.out.println("""
-                1. Preemptive Shortest Job First
-                2. Round Robin
-                3. Preemptive Priority Scheduling
-                4. AG Scheduling
-                5. Exit
-                """);
+        System.out.println("1. Preemptive Shortest Job First\n" +
+                "2. Round Robin\n" +
+                "3. Preemptive Priority Scheduling\n" +
+                "4. AG Scheduling\n" +
+                "5. Exit");
         System.out.print("Enter Choice Number: ");
         int choice = 0;
         while (choice != 5) {
@@ -32,9 +31,7 @@ public class Main {
                 SJF sjf = new SJF();
                 sjf.SJF(n, k, memory);
                 System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number: ");
-            }
-            else if (choice == 2)
-            {
+            } else if (choice == 2) {
                 int timer = 1000000000;
                 System.out.print("Enter number of processes : ");
                 int n = in.nextInt();

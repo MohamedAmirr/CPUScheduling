@@ -66,7 +66,7 @@ public class agScheduling {
 
     void changingHistory() {// if history of quantum time changes
         if (curr.getRemainingQuantumTime() != memory.history.get(curr.getProcessName())) {
-            memory.history.put(curr.getProcessName(), curr.getRemainingQuantumTime());
+            memory.history.put(curr.getProcessName(), curr.getQuantumTime());
             print();
         }
     }
@@ -103,7 +103,7 @@ public class agScheduling {
     }
 
     private void secondStage() {
-        int cost = Math.min(curr.calcQuarterOfQuantumTime(), Math.min(curr.getRemainingQuantumTime(), curr.getRemainingBurstTime()));
+        int cost = Math.min(curr.getHalfOfTimeQuantum()-curr.getQuarterOfTimeQuantum(), Math.min(curr.getRemainingQuantumTime(), curr.getRemainingBurstTime()));
         curr.setRemainingQuantumTime(curr.getRemainingQuantumTime() - cost);
         curr.setRemainingBurstTime(curr.getRemainingBurstTime() - cost);
         memory.time += cost;
@@ -157,12 +157,8 @@ public class agScheduling {
                 continue;
             }
             if (memory.Priority.size() > 0 && memory.Priority.peek().getPriority() < curr.getPriority()) {// hn3ml move mn curr 34an fy priority a7sn
-                changingHistory();
                 secondScenario();
-                if (curr.getRemainingQuantumTime() != memory.history.get(curr.getProcessName())) {
-                    memory.history.put(curr.getProcessName(), curr.getRemainingQuantumTime());
-                    print();
-                }
+                changingHistory();
                 changeCurr(1);
             } else {
                 secondStage();
@@ -174,12 +170,9 @@ public class agScheduling {
                     continue;
                 }
                 if (memory.Exec.size() > 0 && memory.Exec.peek().getRemainingBurstTime() < curr.getRemainingBurstTime()) {
-                    changingHistory();
+//                    changingHistory();
                     thirdScenario();// second scenario
-                    if (curr.getRemainingQuantumTime() != memory.history.get(curr.getProcessName())) {
-                        memory.history.put(curr.getProcessName(), curr.getRemainingQuantumTime());
-                        print();
-                    }
+                    changingHistory();
                     changeCurr(2);
                 } else {
                     thirdStage();
