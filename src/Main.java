@@ -180,7 +180,7 @@ public class Main {
                 }
                 System.out.println("Avg Waiting Time: " + (double) sumWaitingTime / (double) n);
                 System.out.println("Avg Turnaround Time: " + (double) sumTurnAroundTime / (double) n);
-                System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number: ");
+                System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number:");
             }
         }
     }
