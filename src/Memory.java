@@ -8,6 +8,7 @@ public class Memory {
     public Vector<Process> processes = new Vector<>();
     public Map<String,Integer>history = new HashMap<>() ;
     Map.Entry<String ,Integer>lastEntry=null;
+    Vector<String>order=new Vector<>();
 
     Memory() {
         Priority = new PriorityQueue<>(new PriorityBased());

@@ -90,6 +90,14 @@ public class agScheduling {
         curr.setQuantumTime(0);
     }
 
+    void calcTurnaroundTime(Process process) {
+        process.setTurnaroundTime(memory.time + process.getWaitingTime());
+    }
+
+    void calcWaitingTime(Process process) {
+        process.setWaitingTime(process.getTurnaroundTime() - process.getBurstTime());
+    }
+
     private void firstStage() {
         int cost = Math.min(curr.calcQuarterOfQuantumTime(), Math.min(curr.getRemainingQuantumTime(), curr.getRemainingBurstTime()));
         curr.calcHalfOfQuantumTime();
@@ -103,7 +111,7 @@ public class agScheduling {
     }
 
     private void secondStage() {
-        int cost = Math.min(curr.getHalfOfTimeQuantum()-curr.getQuarterOfTimeQuantum(), Math.min(curr.getRemainingQuantumTime(), curr.getRemainingBurstTime()));
+        int cost = Math.min(curr.getHalfOfTimeQuantum() - curr.getQuarterOfTimeQuantum(), Math.min(curr.getRemainingQuantumTime(), curr.getRemainingBurstTime()));
         curr.setRemainingQuantumTime(curr.getRemainingQuantumTime() - cost);
         curr.setRemainingBurstTime(curr.getRemainingBurstTime() - cost);
         memory.time += cost;
@@ -134,6 +142,8 @@ public class agScheduling {
                 changingHistory();
                 curr = null;
             } else if (curr.getRemainingBurstTime() == 0 && curr.getRemainingQuantumTime() > 0) {
+                calcTurnaroundTime(curr);
+                calcWaitingTime(curr);
                 forthScenario();
                 changingHistory();
                 curr = null;
@@ -146,11 +156,14 @@ public class agScheduling {
         while (memory.processes.size() > 0 || (memory.Fcfs.size() > 0)) {
             if (curr == null)
                 whenCurrNull();
+            memory.order.add(curr.getProcessName());
             curr.setRemainingQuantumTime(curr.getQuantumTime());
             firstStage();
             anyThingNew();
             if (curr == null) continue;
             if (curr.getRemainingBurstTime() == 0) {
+                calcTurnaroundTime(curr);
+                calcWaitingTime(curr);
                 forthScenario();
                 changingHistory();
                 curr = null;
@@ -165,6 +178,8 @@ public class agScheduling {
                 anyThingNew();
                 if (curr == null) continue;
                 if (curr.getRemainingBurstTime() == 0) {
+                    calcTurnaroundTime(curr);
+                    calcWaitingTime(curr);
                     forthScenario();
                     curr = null;
                     continue;
@@ -179,6 +194,8 @@ public class agScheduling {
                     anyThingNew();
                     if (curr == null) continue;
                     if (curr.getRemainingBurstTime() == 0) {
+                        calcTurnaroundTime(curr);
+                        calcWaitingTime(curr);
                         forthScenario();
                         curr = null;
                     }

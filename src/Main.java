@@ -13,7 +13,7 @@ public class Main {
         while (choice != 5) {
             choice = in.nextInt();
             if (choice == 1) {
-                System.out.print("Enter no of process: ");
+                System.out.print("Enter Process Name: ");
                 int n = in.nextInt();
                 int[] k = new int[n];
                 Memory memory = new Memory();
@@ -103,6 +103,7 @@ public class Main {
                 System.out.print("Enter Number Of Processes: ");
                 int n = in.nextInt();
                 Memory memory = new Memory();
+                Vector<Process> processes = new Vector<>();
                 for (int i = 0; i < n; i++) {
                     System.out.print("Enter Process Name: ");
                     String name = in.next();
@@ -115,6 +116,7 @@ public class Main {
                     System.out.print("Enter Time Quantum: ");
                     int timeQuantum = in.nextInt();
                     Process pc = new Process(name, arrTime, BurstTime, ProcessPri, timeQuantum);
+                    processes.add(pc);
                     memory.processes.add(pc);
                     memory.history.put(name, timeQuantum);
                 }
@@ -130,6 +132,19 @@ public class Main {
                             }
                         }
                 );
+                Collections.sort(
+                        processes, new Comparator<Process>() {
+                            @Override
+                            public int compare(Process process, Process t1) {
+                                if (process.getArrivalTime() > t1.getArrivalTime()) {
+                                    return 1;
+                                } else if (process.getArrivalTime() < t1.getArrivalTime()) {
+                                    return -1;
+                                } else return 0;
+                            }
+                        }
+                );
+
                 memory.Fcfs.add(memory.processes.firstElement());
                 memory.Priority.add(memory.processes.firstElement());
                 memory.Exec.add(memory.processes.firstElement());
@@ -144,6 +159,24 @@ public class Main {
                 agScheduling ag = new agScheduling(memory);
                 ag.print();
                 ag.go();
+                for(var i:memory.order){
+                    System.out.println(i);
+                }
+                Formatter fmt = new Formatter();
+                fmt.format("%15s %15s %15s", "Process Name", "Waiting Time", "TurnAroundTime");
+                System.out.println(fmt);
+                System.out.print("\n");
+                int sumWaitingTime = 0, sumTurnAroundTime = 0;
+                for (int i = 0; i < n; i++) {
+                    Formatter fmt1 = new Formatter();
+                    fmt1.format("%15s %15s %15s", processes.get(i).getProcessName(), processes.get(i).getWaitingTime(), processes.get(i).getTurnaroundTime());
+                    System.out.println(fmt1);
+                    sumWaitingTime += processes.get(i).getWaitingTime();
+                    sumTurnAroundTime += processes.get(i).getTurnaroundTime();
+                    System.out.print("\n");
+                }
+                System.out.println("Avg Waiting Time: " + (double)sumWaitingTime / (double)n);
+                System.out.println("Avg Turnaround Time: " + (double)sumTurnAroundTime / (double)n);
                 System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number: ");
             }
         }
