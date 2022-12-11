@@ -124,7 +124,6 @@ public class RoundRobin {
 
     //Function to swap between element in the Queue
     public static void QueueMaintain(int[] queue, int n) {
-
         for (int i = 0; (i < n - 1) && (queue[i + 1] != 0); i++) {
             int temp = queue[i];
             queue[i] = queue[i + 1];
