@@ -15,11 +15,10 @@ public class Main {
             if (choice == 1) {
                 System.out.print("Enter Number of Processes: ");
                 int n = in.nextInt();
+                Memory memory = new Memory(n);
                 int[] k = new int[n];
-                Memory memory = new Memory();
-                System.out.println("Enter Context Switching: ");
-                int contextSwitching = in.nextInt();
-                memory.context=contextSwitching;
+                System.out.print("Enter Context Switching value: ");
+                memory.context= in.nextInt();
                 for (int i = 0; i < n; i++) {
                     System.out.print("Enter Process Name: ");
                     String name = in.next();
@@ -35,13 +34,14 @@ public class Main {
                 sjf.SJF(n, k, memory);
                 System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number: ");
             } else if (choice == 2) {
-                int timer = 1000000000;
                 System.out.print("Enter number of processes : ");
                 int n = in.nextInt();
+                Memory memory = new Memory(n);
                 System.out.print("Enter Time Quantum: ");
                 int timeQuantum = in.nextInt();
-                Memory memory = new Memory();
-                int[] TempBurstTime = new int[n];
+                System.out.print("Enter Context Switching value: ");
+                memory.context= in.nextInt();
+                Vector<Process>processes;
                 for (int i = 0; i < n; i++) {
                     System.out.print("Enter Process Name: ");
                     String name = in.next();
@@ -51,10 +51,7 @@ public class Main {
                     int BurstTime = in.nextInt();
                     Process pc = new Process(name, arrTime, BurstTime);
                     pc.setQuantumTime(timeQuantum);
-                    timer = Math.min(timer, arrTime);
-                    TempBurstTime[i] = BurstTime;
                     memory.processes.add(pc);
-                    memory.history.put(name, timeQuantum);
                 }
                 Collections.sort(
                         memory.processes, new Comparator<Process>() {
@@ -68,13 +65,20 @@ public class Main {
                             }
                         }
                 );
-                RoundRobin roundRobin = new RoundRobin();
-                roundRobin.round_robin(memory, n, timer, timeQuantum, TempBurstTime);
+                processes=new Vector<>(memory.processes);
+                RoundRobin roundRobin = new RoundRobin(memory);
+                roundRobin.round_robin();
+                System.out.print("process Number \t Arrival Time \t Burst Time \t Waiting Time \t TurnAround Time" + "\n");
+                for (int i = 0; i < processes.size(); i++) {
+                    System.out.print(i + 1 + " \t  \t  \t  \t    " + processes.get(i).getArrivalTime() + " \t  \t  \t  \t  " + processes.get(i).getBurstTime() + " \t  \t  \t  \t " + processes.get(i).getWaitingTime() + "  \t  \t  \t " + processes.get(i).getTurnaroundTime() + "\n");
+                }
+                roundRobin.printAvgs();
+                roundRobin.orderProcesses();
                 System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number: ");
             } else if (choice == 3) {
                 System.out.print("Enter Number Of Processes: ");
                 int n = in.nextInt();
-                Memory memory = new Memory();
+                Memory memory = new Memory(n);
                 for (int i = 0; i < n; i++) {
                     System.out.print("Enter Process Name: ");
                     String name = in.next();
@@ -105,7 +109,7 @@ public class Main {
             } else if (choice == 4) {
                 System.out.print("Enter Number Of Processes: ");
                 int n = in.nextInt();
-                Memory memory = new Memory();
+                Memory memory = new Memory(n);
                 Vector<Process> processes = new Vector<>();
                 for (int i = 0; i < n; i++) {
                     System.out.print("Enter Process Name: ");
@@ -148,7 +152,7 @@ public class Main {
                         }
                 );
 
-                memory.Fcfs.add(memory.processes.firstElement());
+                memory.processQueue.add(memory.processes.firstElement());
                 memory.Priority.add(memory.processes.firstElement());
                 memory.Exec.add(memory.processes.firstElement());
                 if (memory.processes.firstElement().getArrivalTime() > memory.time)// if first arrival time > 0
@@ -162,8 +166,15 @@ public class Main {
                 agScheduling ag = new agScheduling(memory);
                 ag.print();
                 ag.go();
-                for (var i : memory.order) {
-                    System.out.println(i);
+                for (int i = 0; i < memory.order.size(); i++){
+                    System.out.print(memory.order.get(i));
+                    if((i%6==0 && i>0) || i== memory.order.size()-1){
+                        System.out.println();
+                        continue;
+                    }
+                    if(i!=memory.order.size()-1){
+                        System.out.print(" --> ");
+                    }
                 }
                 Formatter fmt = new Formatter();
                 fmt.format("%15s %15s %15s", "Process Name", "Waiting Time", "TurnAroundTime");

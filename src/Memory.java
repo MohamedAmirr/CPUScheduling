@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Memory {
-    public Queue<Process> Fcfs = new LinkedList<>();
+    public Queue<Process> processQueue = new LinkedList<>();
     public PriorityQueue<Process> Priority;
     public PriorityQueue<Process> Exec;
     public int time = 0;
@@ -10,11 +10,36 @@ public class Memory {
     Map.Entry<String, Integer> lastEntry = null;
     Vector<String> order = new Vector<>();
     public int currContext = 0;
-    public int context;
+    public int context = 0;
+    private int numOfProcesses;
+    private int totalWaitingTime = 0;
+    private int totalTurnaroundTime = 0;
 
-    Memory() {
+    Memory(int _numOfProcesses) {
         Priority = new PriorityQueue<>(new PriorityBased());
         Exec = new PriorityQueue<>(new ExecBased());
+        numOfProcesses = _numOfProcesses;
+    }
+
+    int getNumOfProcesses() {
+        return numOfProcesses;
+    }
+
+    int getTotalWaitingTime() {
+        return totalWaitingTime;
+    }
+
+    int getTotalTurnaroundTime() {
+        return totalTurnaroundTime;
+    }
+
+
+    void increaseWaitingTime(int waitingTime) {
+        totalWaitingTime += waitingTime;
+    }
+
+    void increaseTurnaroundTime(int turnaroundTime) {
+        totalTurnaroundTime += turnaroundTime;
     }
 
 }

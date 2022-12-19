@@ -27,6 +27,7 @@ public class Process {
         this.processName = processName;
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
+        this.remainingBurstTime=burstTime;
     }
 
 
