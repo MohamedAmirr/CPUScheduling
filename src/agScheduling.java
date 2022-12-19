@@ -8,23 +8,23 @@ public class agScheduling {
 
     void changeCurr(int state) {// move pointer "curr" to another process
         if (state == 0) {
-            curr = memory.Fcfs.remove();
+            curr = memory.processQueue.remove();
             memory.Priority.remove(curr);
             memory.Exec.remove(curr);
         } else if (state == 1) {
             curr = memory.Priority.remove();
-            memory.Fcfs.remove(curr);
+            memory.processQueue.remove(curr);
             memory.Exec.remove(curr);
         } else {
             curr = memory.Exec.remove();
             memory.Priority.remove(curr);
-            memory.Fcfs.remove(curr);
+            memory.processQueue.remove(curr);
         }
     }
 
     void whenCurrNull() {// move pointer "curr" to top of ready queue
-        if (memory.Fcfs.isEmpty()) {
-            memory.Fcfs.add(memory.processes.firstElement());
+        if (memory.processQueue.isEmpty()) {
+            memory.processQueue.add(memory.processes.firstElement());
             memory.Priority.add(memory.processes.firstElement());
             memory.Exec.add(memory.processes.firstElement());
             if (memory.time < memory.processes.firstElement().getArrivalTime()) {
@@ -38,7 +38,7 @@ public class agScheduling {
     boolean anyThingNew() {// if any new process has been arrived
         boolean ch = false;
         while (memory.processes.size() > 0 && memory.time >= memory.processes.firstElement().getArrivalTime()) {
-            memory.Fcfs.add(memory.processes.firstElement());
+            memory.processQueue.add(memory.processes.firstElement());
             memory.Priority.add(memory.processes.firstElement());
             memory.Exec.add(memory.processes.firstElement());
             memory.processes.remove(0);
@@ -48,7 +48,7 @@ public class agScheduling {
     }
 
     void returnCurr() {// return curr to the end of ready queue
-        memory.Fcfs.add(curr);
+        memory.processQueue.add(curr);
         memory.Priority.add(curr);
         memory.Exec.add(curr);
     }
@@ -153,7 +153,7 @@ public class agScheduling {
 
 
     void go() {
-        while (memory.processes.size() > 0 || (memory.Fcfs.size() > 0)) {
+        while (memory.processes.size() > 0 || (memory.processQueue.size() > 0)) {
             if (curr == null)
                 whenCurrNull();
             memory.order.add(curr.getProcessName());
