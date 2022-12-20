@@ -1,5 +1,28 @@
 public class SJF {
-    public void SJF(Memory memory) {
+    private final Memory memory;
+
+    SJF(Memory _memory) {
+        memory = _memory;
+    }
+
+    void print() {
+
+        System.out.print("process Number \t Arrival Time \t Burst Time \t CompleteTime \tTurnAround Time \tWaiting Time " + "\n");
+
+        for (int i = 0; i < memory.getNumOfProcesses(); i++) {
+            System.out.print(i + 1 + " \t  \t  \t  \t    " + memory.processes.get(i).getArrivalTime()
+                    + " \t  \t  \t  \t " + memory.processes.get(i).getBurstTime() + " \t  \t  \t  " + memory.processes.get(i).getCompleteTime()
+                    + " \t  \t  \t  " + memory.processes.get(i).getTurnaroundTime()
+                    + " \t  \t  \t " + memory.processes.get(i).getWaitingTime() + "\n");
+        }
+
+        System.out.println("\nAverage Turn Around Time is: " + (memory.getTotalTurnaroundTime() / memory.getNumOfProcesses()));
+        System.out.println("Average Waiting Time is: " + (memory.getTotalWaitingTime() / memory.getNumOfProcesses()));
+        System.out.print("Context Switching: ");
+        System.out.println(memory.currContext + memory.context);
+    }
+
+    public void SJF() {
         int total = 0;
         String processRunning = null;
         while (true) {
@@ -39,20 +62,6 @@ public class SJF {
             memory.increaseWaitingTime(memory.processes.get(i).getWaitingTime());
             memory.increaseTurnaroundTime(memory.processes.get(i).getTurnaroundTime());
         }
-
-        System.out.print("process Number \t Arrival Time \t Burst Time \t CompleteTime \tTurnAround Time \tWaiting Time " + "\n");
-
-        for (int i = 0; i < memory.getNumOfProcesses(); i++) {
-
-            System.out.print(i + 1 + " \t  \t  \t  \t    " + memory.processes.get(i).getArrivalTime()
-                    + " \t  \t  \t  \t " + memory.processes.get(i).getBurstTime() + " \t  \t  \t  " + memory.processes.get(i).getCompleteTime()
-                    + " \t  \t  \t  " + memory.processes.get(i).getTurnaroundTime()
-                    + " \t  \t  \t " + memory.processes.get(i).getWaitingTime() + "\n");
-        }
-
-        System.out.println("\nAverage Turn Around Time is: " + (memory.getTotalTurnaroundTime() / memory.getNumOfProcesses()));
-        System.out.println("Average Waiting Time is: " + (memory.getTotalWaitingTime() / memory.getNumOfProcesses()));
-        System.out.print("Context Switching: ");
-        System.out.println(memory.currContext + memory.context);
+        print();
     }
 }

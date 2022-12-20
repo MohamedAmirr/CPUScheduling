@@ -28,8 +28,8 @@ public class Main {
                     Process pc = new Process(name, arrTime, BurstTime);
                     memory.processes.add(pc);
                 }
-                SJF sjf = new SJF();
-                sjf.SJF( memory);
+                SJF sjf = new SJF(memory);
+                sjf.SJF();
                 System.out.println("\nEnter (5) to Exit Program or Enter Another Choice Number: ");
             } else if (choice == 2) {
                 System.out.print("Enter number of processes : ");
