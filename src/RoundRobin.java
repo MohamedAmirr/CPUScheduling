@@ -7,20 +7,20 @@ public class RoundRobin {
     }
 
     void processFinished(Process process) {
-        process.setTurnaroundTime(memory.time + memory.currContext - process.getArrivalTime());
+        process.setTurnaroundTime(memory.currTime + memory.currContext - process.getArrivalTime());
         process.setWaitingTime(process.getTurnaroundTime() - process.getBurstTime());
         memory.increaseTurnaroundTime(process.getTurnaroundTime());
         memory.increaseWaitingTime(process.getWaitingTime());
     }
 
     void queueEmpty() {
-        memory.time = memory.processes.firstElement().getArrivalTime();
+        memory.currTime = memory.processes.firstElement().getArrivalTime();
         memory.processQueue.add(memory.processes.firstElement());
         memory.processes.remove(memory.processes.firstElement());
     }
 
     void checkForNewProcess() {
-        while (memory.processes.size() > 0 && memory.processes.firstElement().getArrivalTime() <= memory.time) {
+        while (memory.processes.size() > 0 && memory.processes.firstElement().getArrivalTime() <= memory.currTime) {
             memory.processQueue.add(memory.processes.firstElement());
             memory.processes.remove(memory.processes.firstElement());
         }
@@ -40,7 +40,7 @@ public class RoundRobin {
             memory.order.add(peek.getProcessName());
             int mn = Math.min(peek.getRemainingBurstTime(), peek.getQuantumTime());
             peek.setRemainingBurstTime(peek.getRemainingBurstTime() - mn);
-            memory.time += mn;
+            memory.currTime += mn;
             checkForNewProcess();
             if (peek.getRemainingBurstTime() == 0) {
                 processFinished(peek);

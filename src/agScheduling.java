@@ -1,7 +1,6 @@
 public class agScheduling {
     Process curr = null;
     Memory memory;
-
     agScheduling(Memory memory) {
         this.memory = memory;
     }
@@ -27,8 +26,8 @@ public class agScheduling {
             memory.processQueue.add(memory.processes.firstElement());
             memory.Priority.add(memory.processes.firstElement());
             memory.Exec.add(memory.processes.firstElement());
-            if (memory.time < memory.processes.firstElement().getArrivalTime()) {
-                memory.time = memory.processes.firstElement().getArrivalTime();
+            if (memory.currTime < memory.processes.firstElement().getArrivalTime()) {
+                memory.currTime = memory.processes.firstElement().getArrivalTime();
             }
             memory.processes.remove(0);
         }
@@ -37,7 +36,7 @@ public class agScheduling {
 
     boolean anyThingNew() {// if any new process has been arrived
         boolean ch = false;
-        while (memory.processes.size() > 0 && memory.time >= memory.processes.firstElement().getArrivalTime()) {
+        while (memory.processes.size() > 0 && memory.currTime >= memory.processes.firstElement().getArrivalTime()) {
             memory.processQueue.add(memory.processes.firstElement());
             memory.Priority.add(memory.processes.firstElement());
             memory.Exec.add(memory.processes.firstElement());
@@ -91,7 +90,7 @@ public class agScheduling {
     }
 
     void calcTurnaroundTime(Process process) {
-        process.setTurnaroundTime(memory.time - process.getArrivalTime());
+        process.setTurnaroundTime(memory.currTime - process.getArrivalTime());
     }
 
     void calcWaitingTime(Process process) {
@@ -103,7 +102,7 @@ public class agScheduling {
         curr.calcHalfOfQuantumTime();
         curr.setRemainingQuantumTime(curr.getRemainingQuantumTime() - cost);
         curr.setRemainingBurstTime(curr.getRemainingBurstTime() - cost);
-        memory.time += cost;
+        memory.currTime += cost;
         if (curr.getRemainingBurstTime() > 0 && curr.getRemainingQuantumTime() == 0) {
             firstScenario();
             curr = null;
@@ -114,7 +113,7 @@ public class agScheduling {
         int cost = Math.min(curr.getHalfOfTimeQuantum() - curr.getQuarterOfTimeQuantum(), Math.min(curr.getRemainingQuantumTime(), curr.getRemainingBurstTime()));
         curr.setRemainingQuantumTime(curr.getRemainingQuantumTime() - cost);
         curr.setRemainingBurstTime(curr.getRemainingBurstTime() - cost);
-        memory.time += cost;
+        memory.currTime += cost;
         if (curr.getRemainingBurstTime() > 0 && curr.getRemainingQuantumTime() == 0) {
             firstScenario();
             curr = null;
@@ -126,7 +125,7 @@ public class agScheduling {
         while (curr.getRemainingBurstTime() > 0 && curr.getRemainingQuantumTime() > 0) {
             curr.setRemainingQuantumTime(curr.getRemainingQuantumTime() - 1);
             curr.setRemainingBurstTime(curr.getRemainingBurstTime() - 1);
-            memory.time++;
+            memory.currTime++;
 
             if (anyThingNew()) {
                 if (memory.Exec.size() > 0 && memory.Exec.peek().getRemainingBurstTime() < curr.getRemainingBurstTime()) {
@@ -151,9 +150,8 @@ public class agScheduling {
         }
     }
 
-
     void go() {
-        while (memory.processes.size() > 0 || (memory.processQueue.size() > 0)) {
+        while (memory.processes.size() > 0 || memory.processQueue.size() > 0) {
             if (curr == null)
                 whenCurrNull();
             memory.order.add(curr.getProcessName());

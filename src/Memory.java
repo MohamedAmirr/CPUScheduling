@@ -4,7 +4,7 @@ public class Memory {
     public Queue<Process> processQueue = new LinkedList<>();
     public PriorityQueue<Process> Priority;
     public PriorityQueue<Process> Exec;
-    public int time = 0;
+    public int currTime = 0;
     public Vector<Process> processes = new Vector<>();
     public Map<String, Integer> history = new HashMap<>();
     Map.Entry<String, Integer> lastEntry = null;

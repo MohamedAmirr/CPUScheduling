@@ -153,8 +153,8 @@ public class Main {
                 memory.processQueue.add(memory.processes.firstElement());
                 memory.Priority.add(memory.processes.firstElement());
                 memory.Exec.add(memory.processes.firstElement());
-                if (memory.processes.firstElement().getArrivalTime() > memory.time)// if first arrival time > 0
-                    memory.time = memory.processes.firstElement().getArrivalTime();
+                if (memory.processes.firstElement().getArrivalTime() > memory.currTime)// if first arrival time > 0
+                    memory.currTime = memory.processes.firstElement().getArrivalTime();
                 memory.processes.remove(0);
                 for (var entry : memory.history.entrySet()) {
                     memory.lastEntry = entry;

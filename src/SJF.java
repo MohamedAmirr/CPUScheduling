@@ -31,7 +31,7 @@ public class SJF {
                 break;
             Process process = null;
             for (int i = 0; i < memory.getNumOfProcesses(); i++) {
-                if ((memory.processes.get(i).getArrivalTime() <= memory.time)
+                if ((memory.processes.get(i).getArrivalTime() <= memory.currTime)
                         && (!memory.processes.get(i).finished)
                         && (memory.processes.get(i).getRemainingBurstTime() < min)) {
                     min = memory.processes.get(i).getRemainingBurstTime();
@@ -43,13 +43,13 @@ public class SJF {
                 memory.currContext += memory.context;
             }
             if (c == memory.getNumOfProcesses()) {
-                memory.time++;
+                memory.currTime++;
             } else {
                 memory.processes.get(c).setRemainingBurstTime(memory.processes.get(c).getRemainingBurstTime() - 1);
                 processRunning = memory.processes.get(c).getProcessName();
-                memory.time++;
+                memory.currTime++;
                 if (memory.processes.get(c).getRemainingBurstTime() == 0) {
-                    memory.processes.get(c).setCompleteTime(memory.time + memory.currContext + memory.context);
+                    memory.processes.get(c).setCompleteTime(memory.currTime + memory.currContext + memory.context);
                     memory.processes.get(c).finished = true;
                     total++;
                 }
