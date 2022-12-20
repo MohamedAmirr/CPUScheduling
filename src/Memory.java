@@ -12,8 +12,8 @@ public class Memory {
     public int currContext = 0;
     public int context = 0;
     private int numOfProcesses;
-    private int totalWaitingTime = 0;
-    private int totalTurnaroundTime = 0;
+    private float totalWaitingTime = 0;
+    private float totalTurnaroundTime = 0;
 
     Memory(int _numOfProcesses) {
         Priority = new PriorityQueue<>(new PriorityBased());
@@ -25,11 +25,11 @@ public class Memory {
         return numOfProcesses;
     }
 
-    int getTotalWaitingTime() {
+    float getTotalWaitingTime() {
         return totalWaitingTime;
     }
 
-    int getTotalTurnaroundTime() {
+    float getTotalTurnaroundTime() {
         return totalTurnaroundTime;
     }
 

@@ -194,6 +194,3 @@ public class Main {
         }
     }
 }
-
-//6 4 7
-//0 1 2
